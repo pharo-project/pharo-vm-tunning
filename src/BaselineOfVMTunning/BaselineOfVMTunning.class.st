@@ -1,6 +1,6 @@
 Class {
 	#name : #BaselineOfVMTunning,
-	#superclass : #Object,
+	#superclass : #BaselineOf,
 	#category : #BaselineOfVMTunning
 }
 
