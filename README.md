@@ -2,6 +2,15 @@
 
 I am a project to store all the tools to tune the Pharo VM to execute different work loads.
 
+## Installation
+
+```smalltalk
+Metacello new
+	baseline: 'VMTunning';
+	repository: 'github://pharo-project/pharo-vm-tunning';
+	load
+ ```
+
 ## GC Configuration
 
 The GC Configuration class allows to read and set the parameters used by the garbage collector. 
