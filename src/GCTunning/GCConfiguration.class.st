@@ -21,7 +21,8 @@ Class {
 		'desiredEdenSize',
 		'growthHeadroom',
 		'shrinkThreadshold',
-		'fullGCRatio'
+		'fullGCRatio',
+		'tenuringThreshold'
 	],
 	#category : #GCTunning
 }
@@ -46,12 +47,12 @@ GCConfiguration class >> readFromVM [
 		yourself.
 ]
 
-{ #category : #'from-to-the-vm' }
+{ #category : #API }
 GCConfiguration >> activeDuring: aBlock [ 
 
 	| old |
 	old := self writeToVM.
-	aBlock ensure: [ old writeToVM ]
+	^ aBlock ensure: [ old writeToVM ]
 ]
 
 { #category : #accessing }
@@ -84,13 +85,14 @@ GCConfiguration >> growthHeadroom: anInteger [
 	growthHeadroom := anInteger
 ]
 
-{ #category : #'from-to-the-vm' }
+{ #category : #API }
 GCConfiguration >> readFromVM [
 
 	desiredEdenSize := Smalltalk vm parameterAt: 45.
 	growthHeadroom := Smalltalk vm parameterAt: 25. 
 	shrinkThreadshold := Smalltalk vm parameterAt: 24.
 	fullGCRatio := Smalltalk vm parameterAt: 55.
+	tenuringThreshold := Smalltalk vm parameterAt: 6.
 ]
 
 { #category : #accessing }
@@ -103,21 +105,35 @@ GCConfiguration >> shrinkThreadshold: anInteger [
 	shrinkThreadshold := anInteger
 ]
 
-{ #category : #'from-to-the-vm' }
+{ #category : #accessing }
+GCConfiguration >> tenuringThreshold [
+
+	^ tenuringThreshold
+]
+
+{ #category : #accessing }
+GCConfiguration >> tenuringThreshold: anObject [
+
+	tenuringThreshold := anObject
+]
+
+{ #category : #API }
 GCConfiguration >> writeToVM [
 
-	| oldConfig oldDesiredEdenSize oldGrowthHeadroom oldShrinkThreadshold oldFullGCRatio |
+	| oldConfig oldDesiredEdenSize oldGrowthHeadroom oldShrinkThreadshold oldFullGCRatio oldTenuringThreshold |
 	oldConfig := self class new.
 
 	oldDesiredEdenSize := Smalltalk vm parameterAt: 45 put: desiredEdenSize.
 	oldGrowthHeadroom := Smalltalk vm parameterAt: 25 put: growthHeadroom. 
 	oldShrinkThreadshold := Smalltalk vm parameterAt: 24 put: shrinkThreadshold.
 	oldFullGCRatio := Smalltalk vm parameterAt: 55 put: fullGCRatio asFloat.
+	oldTenuringThreshold := Smalltalk vm parameterAt: 6 put: tenuringThreshold.
 	
 	^ oldConfig
 		desiredEdenSize: oldDesiredEdenSize;
 		growthHeadroom: oldGrowthHeadroom;
 		shrinkThreadshold: oldShrinkThreadshold;
 		fullGCRatio: oldFullGCRatio;
+		tenuringThreshold: oldTenuringThreshold;
 		yourself.
 ]
