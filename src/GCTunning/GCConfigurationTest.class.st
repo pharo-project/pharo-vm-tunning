@@ -98,6 +98,14 @@ GCConfigurationTest >> testReadingFromVMShrinkThreadsholdMatchesValue [
 	self assert: conf shrinkThreadshold equals: (Smalltalk vm parameterAt: 24). 
 ]
 
+{ #category : #'tests - reading from VM' }
+GCConfigurationTest >> testReadingFromVMTenuringThresholdMatchesValue [
+
+	| conf |
+	conf := GCConfiguration readFromVM.
+	self assert: conf tenuringThreshold equals: (Smalltalk vm parameterAt: 6)
+]
+
 { #category : #'tests - writing to the VM' }
 GCConfigurationTest >> testWritingReturnsTheOldConfigurationWithDesiredEdenSize [
 
